@@ -151,12 +151,6 @@
       <div id="commentList"></div>
     </div>
   </div>  <script>
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    // Firebase Config
     const firebaseConfig = {
       apiKey: "AIzaSyBJd7dkpjtpoHAGy4LEE78xeXkMnd2bDDk",
       authDomain: "whatsapp-bot-923f8.firebaseapp.com",
@@ -164,45 +158,45 @@
       projectId: "whatsapp-bot-923f8",
       storageBucket: "whatsapp-bot-923f8.appspot.com",
       messagingSenderId: "259002306907",
-      appId: "1:259002306907:web:0935be740e872396a80a7e",
-      measurementId: "G-R1J4HGQ1BH"
+      appId: "1:259002306907:web:0935be740e872396a80a7e"
     };
-    firebase.initializeApp(firebaseConfig);
-    const database = firebase.database();
 
-    // Submit Comment
-    function submitComment() {
-      const comment = document.getElementById("comment").value.trim();
-      if (comment !== "") {
-        const newCommentRef = database.ref("comments").push();
-        newCommentRef.set({ text: comment });
-        document.getElementById("comment").value = "";
-      }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    // Load Comments
-    firebase.database().ref("comments").on("child_added", function(snapshot) {
-      const comment = snapshot.val().text;
-      const p = document.createElement("p");
-      p.innerText = comment;
-      document.getElementById("commentList").appendChild(p);
-    });
-
-    // Likes/Dislikes
     function react(type) {
-      const ref = firebase.database().ref("reactions/" + type);
-      ref.transaction(function(current) {
-        return (current || 0) + 1;
-      });
+      const ref = db.ref('reactions/' + type);
+      ref.transaction(current => (current || 0) + 1);
     }
 
     function updateStatus(likes, dislikes) {
       document.getElementById("status").innerText = `♥️ ${likes}   👎 ${dislikes}`;
     }
 
-    firebase.database().ref("reactions").on("value", function(snapshot) {
+    db.ref('reactions').on('value', snapshot => {
       const data = snapshot.val() || {};
       updateStatus(data.like || 0, data.dislike || 0);
+    });
+
+    function submitComment() {
+      const comment = document.getElementById("comment").value.trim();
+      if (comment !== "") {
+        const newCommentRef = db.ref("comments").push();
+        newCommentRef.set({ text: comment });
+        document.getElementById("comment").value = "";
+      }
+    }
+
+    db.ref("comments").on("child_added", snapshot => {
+      const comment = snapshot.val().text;
+      const p = document.createElement("p");
+      p.innerText = comment;
+      document.getElementById("commentList").appendChild(p);
     });
   </script></body>
                                                      </html>
