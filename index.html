@@ -1,11 +1,13 @@
 <!DOCTYPE html><html lang="sw">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WhatsApp Bot kwa Tsh 3,000</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mr X Developer - WhatsApp Bot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
   <style>
-    * {margin: 0; padding: 0; box-sizing: border-box;}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to bottom right, #2e026d, #15162c);
@@ -64,12 +66,9 @@
       border-radius: 20px;
       padding: 30px;
       max-width: 800px;
-      margin: 0 auto;
-      margin-bottom: 40px;
+      margin: 0 auto 40px;
     }
-    ul li {
-      margin-bottom: 10px;
-    }
+    ul li { margin-bottom: 10px; }
     .button {
       background-color: #25d366;
       color: white;
@@ -94,15 +93,8 @@
       padding: 5px 0;
     }
     @media (min-width: 768px) {
-      .menu-links {
-        display: flex !important;
-        flex-direction: row;
-        position: static;
-        background: none;
-      }
-      .menu-icon {
-        display: none;
-      }
+      .menu-links { display: flex !important; flex-direction: row; position: static; background: none; }
+      .menu-icon { display: none; }
     }
   </style>
 </head>
@@ -130,7 +122,7 @@
   <li>✅ Inatuma picha, PDF au bei za bidhaa kiotomatiki</li>
   <li>✅ Inasaidia lugha mbili (Kiswahili na English)</li>
   <li>✅ Inahifadhi majina na taarifa za mteja kwa follow-up</li>
-  <li>✅ Inaunganisha na Google Sheets kwa backup ya data</li>
+  <li>✅ Inaunganisha na Google Sheets au Firebase kwa backup ya data</li>
   <li>✅ Inatuma ujumbe wa kuwakaribisha namba mpya</li>
 </ul>
 
@@ -148,8 +140,8 @@
   </div>  <div class="card" id="support">
     <h2>📩 Support & Maoni</h2>
     <div class="reaction-buttons">
-      <button onclick="like()">♥️</button>
-      <button onclick="dislike()">👎</button>
+      <button onclick="react('like')">♥️</button>
+      <button onclick="react('dislike')">👎</button>
       <p id="status"></p>
     </div>
     <div class="comments">
@@ -164,32 +156,53 @@
       menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
     }
 
-    let likes = 0;
-    let dislikes = 0;
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBJd7dkpjtpoHAGy4LEE78xeXkMnd2bDDk",
+      authDomain: "whatsapp-bot-923f8.firebaseapp.com",
+      databaseURL: "https://whatsapp-bot-923f8-default-rtdb.firebaseio.com",
+      projectId: "whatsapp-bot-923f8",
+      storageBucket: "whatsapp-bot-923f8.appspot.com",
+      messagingSenderId: "259002306907",
+      appId: "1:259002306907:web:0935be740e872396a80a7e",
+      measurementId: "G-R1J4HGQ1BH"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
 
-    function like() {
-      likes++;
-      updateStatus();
+    // Submit Comment
+    function submitComment() {
+      const comment = document.getElementById("comment").value.trim();
+      if (comment !== "") {
+        const newCommentRef = database.ref("comments").push();
+        newCommentRef.set({ text: comment });
+        document.getElementById("comment").value = "";
+      }
     }
 
-    function dislike() {
-      dislikes++;
-      updateStatus();
+    // Load Comments
+    firebase.database().ref("comments").on("child_added", function(snapshot) {
+      const comment = snapshot.val().text;
+      const p = document.createElement("p");
+      p.innerText = comment;
+      document.getElementById("commentList").appendChild(p);
+    });
+
+    // Likes/Dislikes
+    function react(type) {
+      const ref = firebase.database().ref("reactions/" + type);
+      ref.transaction(function(current) {
+        return (current || 0) + 1;
+      });
     }
 
-    function updateStatus() {
+    function updateStatus(likes, dislikes) {
       document.getElementById("status").innerText = `♥️ ${likes}   👎 ${dislikes}`;
     }
 
-    function submitComment() {
-      const commentBox = document.getElementById("comment");
-      const comment = commentBox.value.trim();
-      if (comment !== "") {
-        const div = document.createElement("p");
-        div.innerText = comment;
-        document.getElementById("commentList").appendChild(div);
-        commentBox.value = "";
-      }
-    }
+    firebase.database().ref("reactions").on("value", function(snapshot) {
+      const data = snapshot.val() || {};
+      updateStatus(data.like || 0, data.dislike || 0);
+    });
   </script></body>
-  </html>
+                                                     </html>
