@@ -1,87 +1,195 @@
-<!DOCTYPE html>
-<html lang="sw">
+<!DOCTYPE html><html lang="sw">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WhatsApp Bot kwa Tsh 3,000</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
+    * {margin: 0; padding: 0; box-sizing: border-box;}
     body {
       font-family: 'Poppins', sans-serif;
-      margin: 0;
-      padding: 0;
       background: linear-gradient(to bottom right, #2e026d, #15162c);
       color: white;
+      padding-top: 70px;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 25px;
+      z-index: 1000;
+    }
+    .navbar h2 {
+      font-size: 1.2rem;
+      font-weight: 600;
       display: flex;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 20px;
+      gap: 10px;
+    }
+    .navbar img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+    .menu-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: block;
+    }
+    .menu-links {
+      display: none;
+      flex-direction: column;
+      background-color: #1e1e2f;
+      position: absolute;
+      top: 60px;
+      right: 20px;
+      border-radius: 10px;
+    }
+    .menu-links a {
+      padding: 10px 20px;
+      color: white;
+      text-decoration: none;
+      border-bottom: 1px solid #333;
+    }
+    .menu-links a:hover {
+      background-color: #333;
     }
     .card {
       background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
       border-radius: 20px;
       padding: 30px;
-      max-width: 600px;
-      width: 100%;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
-      color: #fff;
-    }
-    p {
-      font-size: 1rem;
-      margin-bottom: 15px;
-    }
-    ul {
-      text-align: left;
-      margin-bottom: 20px;
-      padding-left: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      margin-bottom: 40px;
     }
     ul li {
       margin-bottom: 10px;
     }
     .button {
-      display: inline-block;
-      padding: 15px 25px;
       background-color: #25d366;
       color: white;
-      border: none;
-      border-radius: 50px;
+      padding: 12px 24px;
+      border-radius: 30px;
       text-decoration: none;
-      font-weight: bold;
-      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-top: 10px;
     }
-    .button:hover {
-      background-color: #1ebe57;
+    .reaction-buttons button {
+      font-size: 24px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .comments {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      border-radius: 10px;
+    }
+    .comments p {
+      border-bottom: 1px solid #555;
+      padding: 5px 0;
+    }
+    @media (min-width: 768px) {
+      .menu-links {
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        background: none;
+      }
+      .menu-icon {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="card">
+  <nav class="navbar">
+    <h2><img src="https://files.catbox.moe/c0ezph.png" alt="logo"> Mr X Developer</h2>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div id="menu" class="menu-links">
+      <a href="#features">Features</a>
+      <a href="#gharama">Gharama</a>
+      <a href="#support">Support</a>
+      <a href="#huduma">Huduma Nyingine</a>
+    </div>
+  </nav>  <div class="card">
     <h1>💬 Bot ya WhatsApp kwa Tsh 3,000/= tu!</h1>
-    <p><strong>Bot ya WhatsApp</strong> ni msaidizi wa kidigitali anayejibu maswali, kutuma taarifa, kuchukua oda, na kutoa maelezo kwa wateja bila wewe kuwa hewani kila muda.</p>
+    <p><strong>Bot ya WhatsApp</strong> ni msaidizi wa kidigitali anayejibu maswali, kutuma taarifa, kuchukua oda, na kutoa maelezo kwa wateja bila wewe kuwa hewani kila muda.</p><h2 id="features">🧠 Features za Bot:</h2>
+<ul>
+  <li>✅ Inajibu maswali ya wateja 24/7</li>
+  <li>✅ Inatuma maelezo ya bidhaa/huduma zako kiotomatiki</li>
+  <li>✅ Inachukua oda na kuhifadhi taarifa za mteja</li>
+  <li>✅ Inawaongoza wateja kupitia menu ya huduma zako</li>
+  <li>✅ Inasaidia kuongeza mauzo bila stress</li>
+  <li>✅ Inafanya kazi hata ukiwa offline</li>
+  <li>✅ Rahisi kutumia – hakuna coding unayohitaji kujua!</li>
+  <li>✅ Inatuma picha, PDF au bei za bidhaa kiotomatiki</li>
+  <li>✅ Inasaidia lugha mbili (Kiswahili na English)</li>
+  <li>✅ Inahifadhi majina na taarifa za mteja kwa follow-up</li>
+  <li>✅ Inaunganisha na Google Sheets kwa backup ya data</li>
+  <li>✅ Inatuma ujumbe wa kuwakaribisha namba mpya</li>
+</ul>
 
-    <h2>🧠 Features za Bot:</h2>
+<h2 id="gharama">💰 Gharama: Tsh 3,000/= tu</h2>
+<a class="button" href="https://wa.me/255775710774?text=hi%20mr%20x%20developer%20😈%20i%20need%20bot..">📲 Wasiliana WhatsApp</a>
+
+  </div>  <div class="card" id="huduma">
+    <h2>🛠 Huduma Nyingine</h2>
     <ul>
-      <li>✅ Inajibu maswali ya wateja 24/7</li>
-      <li>✅ Inatuma maelezo ya bidhaa/huduma zako kiotomatiki</li>
-      <li>✅ Inachukua oda na kuhifadhi taarifa za mteja</li>
-      <li>✅ Inawaongoza wateja kupitia menu ya huduma zako</li>
-      <li>✅ Inasaidia kuongeza mauzo bila stress</li>
-      <li>✅ Inafanya kazi hata ukiwa offline</li>
-      <li>✅ Rahisi kutumia – hakuna coding unayohitaji kujua!</li>
+      <li>🪲 BugBot na automation tools</li>
+      <li>🌐 Huduma za kutengeneza website</li>
+      <li>📡 Huduma za network & digital support</li>
     </ul>
+    <a class="button" href="mailto:mrxdeveloper2@gmail.com">📧 Wasiliana kwa Email</a>
+  </div>  <div class="card" id="support">
+    <h2>📩 Support & Maoni</h2>
+    <div class="reaction-buttons">
+      <button onclick="like()">♥️</button>
+      <button onclick="dislike()">👎</button>
+      <p id="status"></p>
+    </div>
+    <div class="comments">
+      <h3>✍️ Toa Maoni Yako:</h3>
+      <textarea id="comment" rows="3" style="width: 100%; padding: 10px;"></textarea>
+      <button class="button" onclick="submitComment()">Submit</button>
+      <div id="commentList"></div>
+    </div>
+  </div>  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('menu');
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    }
 
-    <p><strong>💰 Gharama:</strong> <span style="color: #80ffb3;">Tsh 3,000/= tu</span></p>
+    let likes = 0;
+    let dislikes = 0;
 
-    <a href="https://wa.me/255775710774?text=hi%20mr%20x%20developer%20%F0%9F%98%88%20i%20need%20bot.." class="button" target="_blank">
-      📲 Bonyeza hapa kuwasiliana WhatsApp
-    </a>
-  </div>
-</body>
-</html>
+    function like() {
+      likes++;
+      updateStatus();
+    }
+
+    function dislike() {
+      dislikes++;
+      updateStatus();
+    }
+
+    function updateStatus() {
+      document.getElementById("status").innerText = `♥️ ${likes}   👎 ${dislikes}`;
+    }
+
+    function submitComment() {
+      const commentBox = document.getElementById("comment");
+      const comment = commentBox.value.trim();
+      if (comment !== "") {
+        const div = document.createElement("p");
+        div.innerText = comment;
+        document.getElementById("commentList").appendChild(div);
+        commentBox.value = "";
+      }
+    }
+  </script></body>
+  </html>
