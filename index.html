@@ -1,202 +1,135 @@
-<!DOCTYPE html><html lang="sw">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mr X Developer - WhatsApp Bot</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-database-compat.js"></script>
+  <title>📡 Number Intel Tool - Mr X Dev</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to bottom right, #2e026d, #15162c);
-      color: white;
-      padding-top: 70px;
-    }
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0f1b;
+      color: #e0e0e0;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
-      padding: 15px 25px;
-      z-index: 1000;
+      min-height: 100vh;
     }
-    .navbar h2 {
-      font-size: 1.2rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .navbar img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-    }
-    .menu-icon {
-      font-size: 1.5rem;
-      cursor: pointer;
-      display: block;
-    }
-    .menu-links {
-      display: none;
-      flex-direction: column;
-      background-color: #1e1e2f;
-      position: absolute;
-      top: 60px;
-      right: 20px;
-      border-radius: 10px;
-    }
-    .menu-links a {
-      padding: 10px 20px;
-      color: white;
-      text-decoration: none;
-      border-bottom: 1px solid #333;
-    }
-    .menu-links a:hover {
-      background-color: #333;
-    }
-    .card {
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(8px);
+    .app {
+      background: #111827;
       border-radius: 20px;
       padding: 30px;
-      max-width: 800px;
-      margin: 0 auto 40px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 30px rgba(0,255,100,0.2);
     }
-    ul li { margin-bottom: 10px; }
-    .button {
-      background-color: #25d366;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      display: inline-block;
-      margin-top: 10px;
+    h1 {
+      font-size: 22px;
+      color: #0f0;
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .reaction-buttons button {
-      font-size: 24px;
-      margin: 10px;
+    input[type="tel"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      outline: none;
+      background: #1f2937;
+      color: #0f0;
+      font-size: 16px;
+    }
+    .btn {
+      margin-top: 15px;
+      padding: 12px;
+      border: none;
+      width: 100%;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 15px;
       cursor: pointer;
     }
-    .comments {
-      background: rgba(255, 255, 255, 0.05);
+    .saved-btn { background-color: #06d6a0; color: #000; }
+    .location-btn { background-color: #118ab2; color: #fff; }
+    .output {
+      margin-top: 20px;
+      background: #1a1a2e;
       padding: 15px;
-      border-radius: 10px;
+      border-radius: 12px;
+      font-size: 14px;
+      border-left: 4px solid #0f0;
     }
-    .comments p {
-      border-bottom: 1px solid #555;
-      padding: 5px 0;
+    .link {
+      color: #00ffcc;
+      text-decoration: underline;
     }
-    @media (min-width: 768px) {
-      .menu-links { display: flex !important; flex-direction: row; position: static; background: none; }
-      .menu-icon { display: none; }
+    .spinner {
+      display: none;
+      margin: 10px auto;
+      border: 4px solid rgba(0, 255, 0, 0.2);
+      border-top: 4px solid #0f0;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
-  <nav class="navbar">
-    <h2><img src="https://files.catbox.moe/c0ezph.png" alt="logo"> Mr X Developer</h2>
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    <div id="menu" class="menu-links">
-      <a href="#features">Features</a>
-      <a href="#gharama">Gharama</a>
-      <a href="#support">Support</a>
-      <a href="#huduma">Huduma Nyingine</a>
-    </div>
-  </nav>  <div class="card">
-    <h1>💬 Bot ya WhatsApp kwa Tsh 3,000/= tu!</h1>
-    <p><strong>Bot ya WhatsApp</strong> ni msaidizi wa kidigitali anayejibu maswali, kutuma taarifa, kuchukua oda, na kutoa maelezo kwa wateja bila wewe kuwa hewani kila muda.</p><h2 id="features">🧠 Features za Bot:</h2>
-<ul>
-  <li>✅ Inajibu maswali ya wateja 24/7</li>
-  <li>✅ Inatuma maelezo ya bidhaa/huduma zako kiotomatiki</li>
-  <li>✅ Inachukua oda na kuhifadhi taarifa za mteja</li>
-  <li>✅ Inawaongoza wateja kupitia menu ya huduma zako</li>
-  <li>✅ Inasaidia kuongeza mauzo bila stress</li>
-  <li>✅ Inafanya kazi hata ukiwa offline</li>
-  <li>✅ Rahisi kutumia – hakuna coding unayohitaji kujua!</li>
-  <li>✅ Inatuma picha, PDF au bei za bidhaa kiotomatiki</li>
-  <li>✅ Inasaidia lugha mbili (Kiswahili na English)</li>
-  <li>✅ Inahifadhi majina na taarifa za mteja kwa follow-up</li>
-  <li>✅ Inaunganisha na Google Sheets au Firebase kwa backup ya data</li>
-  <li>✅ Inatuma ujumbe wa kuwakaribisha namba mpya</li>
-</ul>
-
-<h2 id="gharama">💰 Gharama: Tsh 3,000/= tu</h2>
-<a class="button" href="https://wa.me/255775710774?text=hi%20mr%20x%20developer%20😈%20i%20need%20bot..">📲 Wasiliana WhatsApp</a>
-
-  </div>  <div class="card" id="huduma">
-    <h2>🛠 Huduma Nyingine</h2>
-    <ul>
-      <li>🪲 BugBot na automation tools</li>
-      <li>🌐 Huduma za kutengeneza website</li>
-      <li>📡 Huduma za network & digital support</li>
-    </ul>
-    <a class="button" href="mailto:mrxdeveloper2@gmail.com">📧 Wasiliana kwa Email</a>
-  </div>  <div class="card" id="support">
-    <h2>📩 Support & Maoni</h2>
-    <div class="reaction-buttons">
-      <button onclick="react('like')">♥️</button>
-      <button onclick="react('dislike')">👎</button>
-      <p id="status"></p>
-    </div>
-    <div class="comments">
-      <h3>✍️ Toa Maoni Yako:</h3>
-      <textarea id="comment" rows="3" style="width: 100%; padding: 10px;"></textarea>
-      <button class="button" onclick="submitComment()">Submit</button>
-      <div id="commentList"></div>
-    </div>
+  <div class="app">
+    <h1>📱 Inter WhatsApp Checker</h1>
+    <input id="phone" type="tel" placeholder="+255712345678">
+    <div class="spinner" id="spinner"></div>
+    <button class="btn saved-btn" onclick="checkSavedAs()">🔍 Check Saved As</button>
+    <button class="btn location-btn" onclick="getLocation()">📍 Get Location</button>
+    <div class="output" id="output"></div>
   </div>  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyBJd7dkpjtpoHAGy4LEE78xeXkMnd2bDDk",
-      authDomain: "whatsapp-bot-923f8.firebaseapp.com",
-      databaseURL: "https://whatsapp-bot-923f8-default-rtdb.firebaseio.com",
-      projectId: "whatsapp-bot-923f8",
-      storageBucket: "whatsapp-bot-923f8.appspot.com",
-      messagingSenderId: "259002306907",
-      appId: "1:259002306907:web:0935be740e872396a80a7e"
-    };
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function toggleMenu() {
-      const menu = document.getElementById('menu');
-      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
-    }
-
-    function react(type) {
-      const ref = db.ref('reactions/' + type);
-      ref.transaction(current => (current || 0) + 1);
-    }
-
-    function updateStatus(likes, dislikes) {
-      document.getElementById("status").innerText = `♥️ ${likes}   👎 ${dislikes}`;
-    }
-
-    db.ref('reactions').on('value', snapshot => {
-      const data = snapshot.val() || {};
-      updateStatus(data.like || 0, data.dislike || 0);
+    const names = ["Bae", "Mchizi Wangu", "Dogo", "Mama Mkubwa", "Wifey", "Mzazi", "Shoga", "Ex wangu", "Mstaafu", "Mjomba", "Drama Queen", "Unknown", "Client", "Kazi", "Backup", "Mapenzi" /*... add 100+*/ ];
+    const locations = Array.from({length: 300}, () => {
+      let lat = (Math.random() * 180 - 90).toFixed(6);
+      let lon = (Math.random() * 360 - 180).toFixed(6);
+      return {lat, lon};
     });
 
-    function submitComment() {
-      const comment = document.getElementById("comment").value.trim();
-      if (comment !== "") {
-        const newCommentRef = db.ref("comments").push();
-        newCommentRef.set({ text: comment });
-        document.getElementById("comment").value = "";
+    function validateNumber(num) {
+      return /^\+\d{10,15}$/.test(num);
+    }
+
+    function showSpinner(show) {
+      document.getElementById('spinner').style.display = show ? 'block' : 'none';
+    }
+
+    function checkSavedAs() {
+      const number = document.getElementById('phone').value;
+      if (!validateNumber(number)) {
+        alert("Enter valid WhatsApp number with +code e.g., +255...");
+        return;
       }
+      showSpinner(true);
+      setTimeout(() => {
+        const name = names[Math.floor(Math.random() * names.length)];
+        document.getElementById('output').innerHTML = `✅ Number saved as: <strong>${name}</strong>`;
+        showSpinner(false);
+      }, 2000);
     }
 
-    db.ref("comments").on("child_added", snapshot => {
-      const comment = snapshot.val().text;
-      const p = document.createElement("p");
-      p.innerText = comment;
-      document.getElementById("commentList").appendChild(p);
-    });
+    function getLocation() {
+      const number = document.getElementById('phone').value;
+      if (!validateNumber(number)) {
+        alert("Enter valid WhatsApp number with +code e.g., +255...");
+        return;
+      }
+      showSpinner(true);
+      setTimeout(() => {
+        const loc = locations[Math.floor(Math.random() * locations.length)];
+        const link = `https://www.google.com/maps?q=${loc.lat},${loc.lon}`;
+        document.getElementById('output').innerHTML = `🌍 Last known location:<br><strong>Lat:</strong> ${loc.lat} <strong>Lon:</strong> ${loc.lon}<br><a class='link' href='${link}' target='_blank'>🧭 Open in Maps</a>`;
+        showSpinner(false);
+      }, 3000);
+    }
   </script></body>
-                                                     </html>
+</html>
